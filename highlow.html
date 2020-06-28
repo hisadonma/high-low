@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>HTML+JS</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+    <div class="box">
+      <h1>Higher or Lower</h1>
+      <p>SCORE: <span id="score">0</span> BEST: <span id="best">0</span></p>
+      <p id="end"> </p>
+      <p id="num">50</p>
+      <div class="buttons">
+        <input type="button" value="LOWER" class="btn" id="lower">
+        <input type="button" value="HIGHER" class="btn" id="higher">
+      </div>
+     <div id="retry">
+    </div>
+    <script>
+    window.onload = function(){
+
+var lower = document.getElementById("lower");
+var higher = document.getElementById("higher");
+var score = document.getElementById("score");
+var num = document.getElementById("num");
+var end = document.getElementById("end");
+var re = document.getElementById("retry");
+var best = document.getElementById("best");
+var gameover = false;
+
+function start( choice ){
+  if( gameover === false ){
+    if( check( choice ) === true ){
+      score.innerHTML = parseInt( score.innerHTML ) + 1;
+    } else {
+      end.innerHTML = "GAME OVER";
+      gameover = true;
+      re.innerHTML = '<input type="button" value="RETRY" class="btn2">'
+
+
+    }
+  }
+}
+
+function check( choice ){
+  var current_value = parseInt( num.innerHTML );
+  num.innerHTML = get_random_values();
+  var next_value = parseInt( num.innerHTML );
+
+  if( choice === "lower" ){
+    // lowerを選択した場合
+    return ( next_value < current_value ) ? true : false;
+  } else {
+    // higherを選択した場合
+    return ( current_value < next_value ) ? true : false;
+  }
+
+}
+
+function get_random_values(){
+  var current_value = parseInt( num.innerHTML );
+  var next_value = Math.floor( Math.random() * 100 );
+  return ( current_value === next_value ) ? get_random_values() : next_value;
+}
+
+lower.onclick = function(){
+  start("lower");
+};
+
+higher.onclick = function(){
+  start("higher");
+}
+
+re.onclick = function(){
+  end.innerHTML = "";
+  if(parseInt(best.innerHTML ) < parseInt(score.innerHTML ))
+  {
+	  best.innerHTML = score.innerHTML;
+  }
+  gameover = false;
+  re.innerHTML ="";
+  num.innerHTML =50;
+  score.innerHTML = 0;
+
+}
+
+}
+    </script>
+  </body>
+</html>
